@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Rshop</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <link rel="stylesheet" href="style.css">
+  
+</head>
+<body>
+  <header class="header">
+    <div class="logo">
+      <img src="r.jpg" alt="Logo">
+    </div>
+    <div class="search-box">
+      <input type="text" placeholder="Search...">
+      <button>Search</button>
+    </div>
+    <div class="add-to-cart">
+      <i class="fas fa-shopping-cart"></i>
+    </div>
+  </header>
+
+  
+  <div class="product-list" id="product-list"></div>
+
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    // Fetch data from the API and populate the product list
+    fetch('https://fakestoreapi.com/products')
+      .then(response => response.json())
+      .then(products => {
+        const productList = document.getElementById('product-list');
+
+        products.forEach(product => {
+          const listItem = document.createElement('div');
+          listItem.classList.add('product-list-item');
+
+          const image = document.createElement('img');
+          image.classList.add('product-image');
+          image.src = product.image;
+          image.alt = product.title;
+          listItem.appendChild(image);
+
+          const title = document.createElement('h3');
+          title.classList.add('product-title');
+          title.textContent = product.title;
+          listItem.appendChild(title);
+
+          const price = document.createElement('div');
+          price.classList.add('product-price');
+          price.textContent = `$${product.price}`;
+          listItem.appendChild(price);
+
+          const rating = document.createElement('div');
+          rating.classList.add('product-rating');
+          for (let i = 0; i < Math.round(product.rating.rate); i++) {
+            const starIcon = document.createElement('i');
+            starIcon.classList.add('fas', 'fa-star');
+            rating.appendChild(starIcon);
+          }
+          listItem.appendChild(rating);
+
+          productList.appendChild(listItem);
+        });
+      })
+      .catch(error => {
+        console.log('Error:', error);
+      });
+  </script>
+</body>
+</html>
